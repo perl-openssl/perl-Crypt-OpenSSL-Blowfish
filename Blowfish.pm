@@ -8,7 +8,7 @@ use vars qw/$VERSION @ISA/;
 require DynaLoader;
 @ISA = qw/DynaLoader/;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 bootstrap Crypt::OpenSSL::Blowfish $VERSION;
 
@@ -52,18 +52,19 @@ Crypt::OpenSSL::Blowfish - Blowfish Algorithm using OpenSSL
 =head1 SYNOPSIS
 
     use Crypt::OpenSSL::Blowfish;
-    my $cipher = new Crypt::Blowfish $key; 
+    my $cipher = new Crypt::OpenSSL::Blowfish $key; 
     my $ciphertext = $cipher->encrypt($plaintext);
     $plaintext = $cipher->decrypt($ciphertext);
 
 =head1 DESCRIPTION
 
 Crypt::OpenSSL::Blowfish implements the Blowfish Algorithm using functions contained in the OpenSSL crypto library.
-It produces different result than Crypt::Blowfish.
+Crypt::OpenSSL::Blowfish has an interface similar to Crypt::Blowfish, but produces different result than Crypt::Blowfish.
 
 =head1 SEE ALSO
 
 L<Crypt::Blowfish>
+
 http://www.openssl.org/
 
 =head1 AUTHOR
