@@ -52,7 +52,7 @@ Crypt::OpenSSL::Blowfish - Blowfish Algorithm using OpenSSL
 =head1 SYNOPSIS
 
     use Crypt::OpenSSL::Blowfish;
-    my $cipher = new Crypt::OpenSSL::Blowfish $key; 
+    my $cipher = new Crypt::OpenSSL::Blowfish $key;
     my $ciphertext = $cipher->encrypt($plaintext);
     $plaintext = $cipher->decrypt($ciphertext);
 

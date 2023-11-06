@@ -17,7 +17,7 @@ char * blowfish_init(key)
         if (key_len < 8 || key_len > 56) {
             croak("Invalid length key");
         }
-        
+
         BF_set_key((BF_KEY *)ks, key_len, key);
         ST(0) = sv_2mortal(newSVpv(ks, sizeof(ks)));
     }
@@ -33,7 +33,7 @@ void blowfish_crypt(data, ks, dir)
         if (data_len != 8) {
             croak("data must be 8 bytes long");
         }
-        
+
         if (dir) {
             BF_decrypt((BF_LONG *)data, (BF_KEY *)ks);
         } else {

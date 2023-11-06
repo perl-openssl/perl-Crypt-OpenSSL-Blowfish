@@ -24,7 +24,7 @@ To install this module type the following:
 SYNOPSIS
 
    use Crypt::OpenSSL::Blowfish;
-   my $cipher = new Crypt::Blowfish $key; 
+   my $cipher = new Crypt::Blowfish $key;
    my $ciphertext = $cipher->encrypt($plaintext);
    $plaintext = $cipher->decrypt($ciphertext);
 
