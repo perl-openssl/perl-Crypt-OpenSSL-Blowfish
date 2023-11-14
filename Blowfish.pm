@@ -17,28 +17,18 @@ sub keysize     {  0; }
 sub min_keysize {  8; }
 sub max_keysize { 56; }
 
-sub new {
-    my $self = {};
-    bless $self, shift;
-    $self->{ks} = Crypt::OpenSSL::Blowfish::init(shift);
-
-    $self;
-}
-
 sub encrypt {
     my ($self, $data) = @_;
 
-    Crypt::OpenSSL::Blowfish::crypt($data, $self->{ks}, 0);
+    return $self->crypt($data, 1);
 
-    $data;
 }
 
 sub decrypt {
     my ($self, $data) = @_;
 
-    Crypt::OpenSSL::Blowfish::crypt($data, $self->{ks}, 1);
+    return $self->crypt($data, 0);
 
-    $data;
 }
 
 1;
