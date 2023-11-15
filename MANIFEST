@@ -5,3 +5,4 @@ README
 t/blowfish.t
 Blowfish.pm
 Blowfish.xs
+ppport.h

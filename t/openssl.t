@@ -16,7 +16,8 @@ is(ref $cipher, 'Crypt::OpenSSL::Blowfish');
 my $encrypted = $cipher->encrypt($plaintext);
 ok($encrypted eq $expected_enc, "encrypt with key length 32 (AES-128-ECB)");
 
-ok($cipher->decrypt($encrypted) eq $plaintext, "decrypt with key length 32 (AES-128-ECB)");
+ok($cipher->decrypt($expected_enc) eq $plaintext, "decrypt with key length 32 (AES-128-ECB)");
+
 ok($cipher->decrypt($cipher->encrypt("Hello!!!")) eq "Hello!!!", "Simple String Encrypted/Decrypted Successfully with key length 32 AES-128-ECB");
 
 $encrypted = $cipher->encrypt("Hello!!!");
