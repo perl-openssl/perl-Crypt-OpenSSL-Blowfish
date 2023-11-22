@@ -1,8 +1,31 @@
 Revision history for Perl extension Crypt::OpenSSL::Blowfish.
 
-    - Rewrite the XS and sort out why openssl enc -d -bf-ecb
-      cannot decrypt the data encrypted by prior versions of this
-      module
+{{$NEXT}}
+
+    [Legacy Notice]
+    OpenSSL version 3 considers Blowfish to be a legacy encryption
+    method.  Users of this module (if any) need to consider moving to
+    other encryption methods.
+
+    [Compatibility Notice]
+    This version maintains compatibility with the older versions.
+    However, this is not fully compatible with openssl's bf-ecb cipher.
+    See the documentation relating to how to use the compatible version.
+
+    [Significant rewrite]
+    - OpenSSL 3 has deprecated the use of low-level functions.
+    - Update to use OpenSSL v3 EVP_ api for openssl >= 3.0.0
+    - Significant changes to the module while retaining compatibity with
+      the previous versions.  As Blowfish is now outdated and considered
+      legacy by OpenSSL this rewrite was done ot of interest not necessity.
+
+    [Detailed Change Log]
+    - 631666a Convert build system to Dist::Zilla
+    - 8c77edf Add github actions to test module
+    - adbf712 Upgrade test to use Test:V0
+    - 9f195aa Update to use the openssl v3 API
+    - 2e94736 Rewrite the XS and sort out why openssl compatability issues
+    - 7016348 Remove EOL spaces
 
 0.02  Wed Jul  4 10:36:35 2009
 	- minor pod fixes
