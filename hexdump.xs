@@ -30,6 +30,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifdef INCLUDE_HEXDUMP
 int hexdump(FILE *fd, void const *data, size_t length, int linelen, int split)
 {
 	char buffer[512];
@@ -130,4 +131,4 @@ int hexdump(FILE *fd, void const *data, size_t length, int linelen, int split)
 
 	return 0;
 }
-
+#endif

@@ -20,7 +20,6 @@
 /* See hexdump.xs for LICENSE information                   */
 /*==========================================================*/
 
-#define INCLUDE_HEXDUMP
 #ifdef INCLUDE_HEXDUMP
 #include "hexdump.xs"
 #endif
