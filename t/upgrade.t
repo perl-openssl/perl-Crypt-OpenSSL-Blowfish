@@ -18,16 +18,20 @@ my $openssl_enc = pack("C*", 0x95, 0xd4, 0x6b, 0x2f, 0x14, 0xe6, 0xe1, 0x6f);
 my $cipher = Crypt::OpenSSL::Blowfish->new($key);
 isa_ok($cipher, 'Crypt::OpenSSL::Blowfish');
 
-ok($cipher->get_big_endian('ABCDABCD') eq 'DCBADCBA', "Successful big endian conversion");
-ok($cipher->get_little_endian('DCBADCBA') eq 'ABCDABCD', "Successful little endian conversion");
+ok($cipher->get_big_endian('ABCDABCD') eq 'DCBADCBA', "Successful big endian conversion",
+    $cipher->get_big_endian('ABCDABCD'));
+ok($cipher->get_little_endian('DCBADCBA') eq 'ABCDABCD', "Successful little endian conversion",
+    $cipher->get_little_endian('DCBADCBA'));
 
 # Just simple encryption test
 my $encrypted = $cipher->encrypt($plaintext);
-ok($encrypted eq $expected_enc, "Successfully encrypted plain text with old method");
+ok($encrypted eq $expected_enc, "Successfully encrypted plain text with old method",
+    uc(unpack("H16", $encrypted)));
 
 # Decrypt with the old method
 my $decrypted = $cipher->decrypt($expected_enc);
-ok($decrypted eq $plaintext, "Successfully decrypted data encrypted with old method");
+ok($decrypted eq $plaintext, "Successfully decrypted data encrypted with old method",
+    uc(unpack("H16", $decrypted)));
 
 # Encrypt with the new method
 $cipher = Crypt::OpenSSL::Blowfish->new($key, {});
@@ -35,7 +39,8 @@ isa_ok($cipher, 'Crypt::OpenSSL::Blowfish');
 
 # Ensure that the encrypted value is compatible with openssl
 $encrypted = $cipher->encrypt($plaintext);
-ok($encrypted eq $openssl_enc, "Successfully encrypted plain text compatible with openssl using new method");
+ok($encrypted eq $openssl_enc, "Successfully encrypted plain text compatible with openssl using new method",
+    uc(unpack("H16", $encrypted)));
 
 #=============================================
 # Upgrade the old encryption using old nethod
@@ -53,7 +58,7 @@ $encrypted = $cipher->encrypt($be);
 my $le = $cipher->get_little_endian($encrypted);
 
 # Ensure that the encrypted value is compatible with openssl
-ok($le eq $openssl_enc, "Successfully encrypted plain text compatible with openssl - manual endian handling");
+ok($le eq $openssl_enc, "Successfully encrypted plain text compatible with openssl - manual endian handling", uc(unpack("H16", $le)));
 
 #=============================================
 # Decrypt the old encryption using new nethod
@@ -71,6 +76,7 @@ my $new_data = $cipher->decrypt($be);
 $le = $cipher->get_little_endian($new_data);
 
 # Ensure that the decrypted value is the original plain text
-ok($le eq $plaintext, "Successfully decrypted old encryption with new method - manual endian handling");
+ok($le eq $plaintext, "Successfully decrypted old encryption with new method - manual endian handling",
+    uc(unpack("H16", $encrypted)));
 done_testing;
 
