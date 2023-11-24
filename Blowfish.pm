@@ -8,7 +8,7 @@ use vars qw/$VERSION @ISA/;
 require DynaLoader;
 @ISA = qw/DynaLoader/;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 bootstrap Crypt::OpenSSL::Blowfish $VERSION;
 

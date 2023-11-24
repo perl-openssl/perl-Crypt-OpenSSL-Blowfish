@@ -24,7 +24,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Crypt-OpenSSL-Blowfish
   homepage: http://search.cpan.org/dist/Crypt-OpenSSL-Blowfish/
   repository: git://github.com/perl-openssl/perl-Crypt-OpenSSL-Blowfish.git
-version: '0.03'
+version: '0.04'
 x_generated_by_perl: v5.38.0
 x_maintainers:
   - 'Timothy Legge <timlegge@cpan.org>'
