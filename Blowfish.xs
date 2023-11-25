@@ -65,6 +65,31 @@ STATIC HV *ensure_hv(pTHX_ SV *sv, const char *identifier) {
 
 /*======================================================================*/
 /*                                                                      */
+/* big_endian(const unsigned char *in, unsigned char *out)              */
+/*                                                                      */
+/* Swap the endianness of the block of data 'in'.  This is only         */
+/* required for compatability with the original version of              */
+/* Crypt::OpenSSL::Blowfish.  Which calls BF_encrypt and BF_decrypt     */
+/* without switching to big endian first.  This function is called if   */
+/* Crypt::OpenSSL::Blowfish is created without any options (other than  */
+/* the key).                                                            */
+/*                                                                      */
+/*======================================================================*/
+void big_endian(const unsigned char *in, unsigned char *out)
+{
+    BF_LONG l;
+    BF_LONG d[2];
+
+    n2l(in, l);
+    d[0] = l;
+    n2l(in, l);
+    d[1] = l;
+    Copy(d, out, 2, BF_LONG);
+    l = d[0] = d[1] = 0;
+}
+
+/*======================================================================*/
+/*                                                                      */
 /* return_big_endian(const unsigned char *in)                           */
 /*                                                                      */
 /* Swap the endianness of the block of data 'in'.  This is only         */
@@ -78,20 +103,8 @@ STATIC HV *ensure_hv(pTHX_ SV *sv, const char *identifier) {
 unsigned char * return_big_endian(pTHX_ const unsigned char *in)
 {
     unsigned char * out;
-    BF_LONG l;
-    BF_LONG d[2];
-
-    Newc(1, out, BF_BLOCK, unsigned char, unsigned char);
-
-    memcpy(out, in, BF_BLOCK);
-    n2l(out, l);
-    d[0] = l;
-    n2l(out, l);
-    d[1] = l;
-
-    memcpy(out, d, BF_BLOCK);
-
-    l = d[0] = d[1] = 0;
+    Newx(out, BF_BLOCK, unsigned char); //Bunsigned char, unsigned char);
+    big_endian(in, out);
     return out;
 }
 
@@ -117,13 +130,25 @@ void little_endian(const BF_LONG *in, unsigned char *out)
     l2n(l, out);
 }
 
+/*======================================================================*/
+/*                                                                      */
+/* return_little_endian(const unsigned char *in)                        */
+/*                                                                      */
+/* Swap the endianness of the block of data 'in'.  This is only         */
+/* required for compatability with the original version of              */
+/* Crypt::OpenSSL::Blowfish.  Which calls BF_encrypt and BF_decrypt     */
+/* without switching to big endian first.  This function is called if   */
+/* Crypt::OpenSSL::Blowfish is created without any options (other than  */
+/* the key) or if the Modules get_big_endian is called.                 */
+/*                                                                      */
+/*======================================================================*/
 unsigned char * return_little_endian(pTHX_ unsigned char *in)
 {
     unsigned char *out;
     BF_LONG d[2];
 
-    memcpy(d, in, BF_BLOCK);
-    Newc(1, out, BF_BLOCK, unsigned char, unsigned char);
+    Newx(out, BF_BLOCK, unsigned char);
+    Copy(in, d, BF_BLOCK, unsigned char);
 
     little_endian(d, out);
 
@@ -286,8 +311,10 @@ SV * blowfish_crypt(self, data_sv, encrypt)
 
         /*hexdump(stdout, data, data_len, 16, 8); */
 
+        Newx(out, BF_BLOCK, unsigned char);
         if (! modern) {
-            in = return_big_endian(aTHX_ in);
+            Copy(in, out, BF_BLOCK, unsigned char);
+            in = return_big_endian(aTHX_ out);
         }
 
         /*hexdump(stdout, data, data_len, 16, 8); */
@@ -298,8 +325,6 @@ SV * blowfish_crypt(self, data_sv, encrypt)
 
         if (!SvMAGICAL(*svp) || (mg = mg_findext(*svp, PERL_MAGIC_ext, &ks_magic)) == NULL)
             croak("Accessing the key from magic failed");
-
-        Newc(1, out, BF_BLOCK, unsigned char, unsigned char);
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
         ctx = (EVP_CIPHER_CTX *) mg->mg_ptr;
         print_pointers(aTHX_ "ctx", ctx);
@@ -354,7 +379,8 @@ SV * blowfish_crypt(self, data_sv, encrypt)
         /*hexdump(stdout, out, sizeof(char)*8, 16, 8); */
 
         if (! modern) {
-            out = return_little_endian(aTHX_ out);
+            Copy(out, in, BF_BLOCK, unsigned char );
+            out = return_little_endian(aTHX_ in);
         }
 
         /*hexdump(stdout, out, sizeof(char)*8, 16, 8); */
