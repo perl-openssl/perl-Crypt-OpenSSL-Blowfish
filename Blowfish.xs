@@ -489,7 +489,7 @@ CODE:
     modern = (int *) mg_mod->mg_ptr;
     print_pointers(aTHX_ "modern", modern);
     /* Clean up */
-    Safefree(ctx);
+    EVP_CIPHER_CTX_free(ctx);
     Safefree(modern);
 #else
     bf_ks = (BF_KEY *) mg->mg_ptr;
