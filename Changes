@@ -2,6 +2,30 @@ Revision history for Perl extension Crypt::OpenSSL::Blowfish.
 
 {{$NEXT}}
 
+0.05 -- Fri Nov 24 23:28:52 AST 2023
+
+    [Legacy Notice]
+    OpenSSL version 3 considers Blowfish to be a legacy encryption
+    method.  Users of this module (if any) need to consider moving to
+    other encryption methods.
+
+    [Compatibility Notice]
+    This version maintains compatibility with the older versions.
+    However, this is not fully compatible with openssl's bf-ecb cipher.
+    See the documentation relating to how to use the compatible version.
+
+    [Significant rewrite]
+    - OpenSSL 3 has deprecated the use of low-level functions.
+    - Update to use OpenSSL v3 EVP_ api for openssl >= 3.0.0
+    - Significant changes to the module while retaining compatibity with
+      the previous versions.  As Blowfish is now outdated and considered
+      legacy by OpenSSL this rewrite was done ot of interest not necessity.
+
+    [Detailed Change Log]
+    - df6fa5c Update version number for a release
+    - 33ef340 Fix issues with the conversion of endianness
+    - f766537 v0.04
+
 0.04 -- Thu Nov 23 20:19:45 AST 2023
 
     [Legacy Notice]
