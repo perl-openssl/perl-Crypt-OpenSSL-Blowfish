@@ -55,6 +55,8 @@ if ($Config{myuname} =~ /sunos|solaris/i) {
   }
 } elsif ($Config{myuname} =~ /darwin/ ) {
   $args{LDDLFLAGS} = openssl_lib_paths() . " " . $Config{lddlflags};
+} elsif ($Config{myuname} =~ /freebsd/ ) {
+  $args{CCFLAGS} = openssl_inc_paths();
 } else {
   $args{OPTIMIZE} = $cc_option_flags;
 }
