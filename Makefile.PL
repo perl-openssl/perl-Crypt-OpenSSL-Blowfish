@@ -73,12 +73,15 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "MIN_PERL_VERSION" => "5.008",
   "NAME" => "Crypt::OpenSSL::Blowfish",
-  "PREREQ_PM" => {},
+  "PREREQ_PM" => {
+    "Carp" => 0,
+    "DynaLoader" => 0
+  },
   "TEST_REQUIRES" => {
     "MIME::Base64" => 0,
     "Test2::V0" => 0
   },
-  "VERSION" => "0.07",
+  "VERSION" => "0.08",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -90,7 +93,9 @@ my %WriteMakefileArgs = (
 );
 
 my %FallbackPrereqs = (
+  "Carp" => 0,
   "Crypt::OpenSSL::Guess" => "0.10",
+  "DynaLoader" => 0,
   "MIME::Base64" => 0,
   "Test2::V0" => 0
 );
